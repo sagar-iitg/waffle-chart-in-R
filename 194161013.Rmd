@@ -1,0 +1,194 @@
+---
+title: 'End Sem: Data Visualization'
+author: "Sagar Kumar"
+output:
+  word_document: default
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+```
+
+
+
+\newpage
+***
+ 
+**waffle chart using ggplot**
+
+```{r message=FALSE, warning=FALSE}
+
+library(ggplot2)
+data("mpg")
+var <- mpg$class   #class is categorical data (eg:- 2seater,compact)
+nrows=10
+df <- expand.grid(y = 1:nrows, x = 1:nrows)
+# 'expand. grid' creates a data frame that is the cartesian product of its arguments.
+
+categ_table <- round(table(var) * ((nrows*nrows)/(length(var))))
+
+
+df$category <- as.factor(rep(names(categ_table), categ_table))  
+
+
+
+ 
+theme<-theme(plot.title=element_text(size=15, 
+                                    face="bold", 
+                                    hjust=0.5,
+                                    lineheight=1.2),
+            plot.subtitle=element_text(size=10, 
+                                       face="bold",
+                                       hjust=0.5),  
+            plot.caption=element_text(size=8),  
+            axis.title.x=element_text(size=15),  
+            axis.title.y=element_text(size=15),  
+            axis.text.x=element_text(size=8),  
+            axis.text.y=element_text(size=8)) 
+
+
+ggplot(df, aes(x = x, y = y, fill = category)) + 
+  geom_tile(color = "black", size = 0.5) +
+  labs(title="Waffle Chart", subtitle="'Class' of vehicles",
+       caption="Source: mpg (1 cell represents 1%)") +theme
+ 
+
+```
+
+
+
+\newpage
+***
+
+**Waffle chart Using Library(waffle)**
+
+```{r message=FALSE, warning=FALSE}
+
+library(waffle)
+library(extrafont)
+data("mpg")
+var <- mpg$class 
+parts<-c(two_seater=2,compact=20,midsize=18,minivan=5,pickup=14,subcompact=15,suv=26	)
+waffle(parts,rows=10,colors=rainbow(7),title="Waffle Chart",legend_pos ="right")
+
+
+```
+
+
+
+
+
+
+
+
+
+\newpage
+***
+
+**Pie Chart**
+
+
+```{r}
+
+library(ggplot2)
+data("mpg")
+var <- mpg$class
+#table(var)
+freq<-c(5,47,41,11,33,35,62)
+class<-c('2seater','compact' ,'midsize','minivan','pickup','subcompact', 'suv' )
+percent<-round(freq/sum(freq)*100)
+#percent
+lbls <- paste(class, percent) # add percents to labels
+#lbls
+lbls <- paste(lbls,"%",sep="") # ad % to labels
+#lbls
+pie(freq,labels = lbls, col=rainbow(length(lbls)),main="Pie Chart ")
+
+```
+
+
+**Comparison between waffle and pie Chart**
+
+
+**Pie v/s waffle**
+Pie charts is not the best way to present data because pie chart forces us to compare angles, which is pretty hard for human.
+
+Waffle Chart is 10x10 grid in which each cell represents one percentage point. So, a block of 10 highlighted cells represents 10% of whole data and in waffle chart we can easily counts cell. 
+
+
+And from above figure we can easily visualize waffle chart compare to pie chart.
+
+
+***
+**About Waffle Chart :**
+
+1.Waffle charts is a nice way of showing the categorical composition of the total population.
+
+2.Waffle charts are an effective alternative to other proportional chart styles(eg: Pie Chart). 
+
+3.Waffle Charts are a form of pie charts that use squares instead of circles to represent percentages.
+
+4.They are usually 10x10 grids,and each grid represents 1% of total population .
+
+5.Waffle Charts are a form of pie charts that use squares instead of circles to represent percentages
+  They are usually 10x10 grids.
+  
+6.Square pie chart (Waffle chart), showing how smaller percentages are more easily shown than on circular    charts. On the 10x10 grid, each cell represents 1%. 
+
+7.There is a grid of small cells, of which coloured cells represent the data. A chart can consist of one     category or several categories. 
+
+
+
+\newpage
+***
+**Questions and Answers**
+
+**Q1 What the Waffle Charts Dispaly?**
+
+Ans: 
+
+Waffle chart is a 10 X 10 cell grid in which each cell represents 1 percentage point summing up to total 100%,Waffle chart can consist of one category or several categories.
+
+The waffle chart is a chart in the shape of a square  with small squares inside the big square. It is used to show the percentage of a certain category compared to all the categories. The waffle  chart is a great alternative to the pie chart.
+ 
+it’s typically made with 100 squares representing the whole, it can be shaded or filled based on the relation of several parts to a whole, just like a pie chart, but it’s also good for displaying a single percentage.
+
+
+**Q2 What are the advantages and disadantages of waffle chart?**
+
+Ans:
+**Advantages**  
+With a Waffle chart, you get a more better view of the data 
+
+Makes analysis more quantitative. This is because, in a waffle chart, we count cells instead of angle and area.
+
+The key pro is its diversity in being able to show individual parts of a whole and compare single percentages.
+
+**Disadvantages**
+
+When KPI(Key Performance Indicator) being measured could exceed 100%.
+
+When exact percentages are vital, as showing fraction of a percent is more difficult to see beyond a      rough approximation.
+
+The cons are that it becomes too complicated when too many segments are involved, and the individualized spaces don’t leave a good spot to put numbers or much text within the visual itself.
+
+
+
+
+**Q3 Is there any possibility to enhance visual information by using additional attributes**  
+Ans: We can enhance Visual information by  conditional formatting where cells are highlighted with different colors based on the percentage value of that KPI
+ 
+ 
+
+**Q4 Is there any Variant of Waffle Chart.?**  
+Ans:pie chart.
+
+
+
